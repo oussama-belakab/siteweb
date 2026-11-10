@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عرض الدرس - المنصة التعليمية</title>
+  
+  <!-- 1. استدعاء ملف الـ CSS الخاص بمشغل Plyr -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  
+  <!-- 2. ربط ملف الـ CSS الخاص بموقعك -->
+  <link rel="stylesheet" href="css/lesson.css">
+</head>
+<body>
+
+  <div class="lesson-container">
+    
+    <!-- 🎥 مشغّل الفيديو الاحترافي (بدون أزرار يوتيوب) -->
+    <div class="video-wrapper">
+      <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="9UrdZXS9Cy4"></div>
+    </div>
+
+    <!-- تفاصيل الدرس -->
+    <div class="lesson-details">
+      <span class="badge">شعبة علوم تجريبية / تقني رياضي</span>
+      <h2>تمرين رقم 1 في المتتاليات 🔥 بكالوريا الشعب العلمية والتقنية</h2>
+      <p class="teacher-name">👨‍🏫 <strong>الأستاذ:</strong> بلعقاب أسامة</p>
+      <p class="lesson-desc">
+        شرح مفصل + أفكار منهجية شاملة لحل التمارين في المتتاليات.
+      </p>
+    </div>
+
+    <!-- المرفقات والملخصات -->
+    <div class="attachments-card">
+      <h3>📂 مرفقات الدرس:</h3>
+      <ul class="file-list">
+        <li>
+          <span>📄 ملخص درس المتتاليات (PDF)</span>
+          <a href="#" class="btn-download">تحميل ⬇️</a>
+        </li>
+        <li>
+          <span>📝 نص التمرين الأول</span>
+          <a href="#" class="btn-download">تحميل ⬇️</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- 3. استدعاء مكتبة السكربت لتفعيل المشغل -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script>
+    // تفعيل مشغّل Plyr وتخصيص الأزرار
+    const player = new Plyr('#player', {
+      controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+      youtube: { noCookie: true, rel: 0, showinfo: 0, iv_load_policy: 3, modestbranding: 1 }
+    });
+  </script>
+
+</body>
+</html>

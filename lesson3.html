@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>منصة الفيديو المحمية</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    .video-wrapper {
+      max-width: 800px;
+      margin: 20px auto;
+      position: relative; /* ضروري لعمل الطبقة السوداء */
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* هذه هي الطبقة السوداء التي ستغطي الفيديو */
+    #black-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black; /* اللون الأسود */
+      z-index: 10; /* لجعلها فوق الفيديو */
+      display: none; /* مخفية افتراضياً */
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: sans-serif;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="video-wrapper">
+  <!-- الطبقة السوداء -->
+  <div id="black-screen">هذا المحتوى محمي. لا يمكن التقاط الشاشة.</div>
+  
+  <!-- مشغل الفيديو -->
+  <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="9UrdZXS9Cy4"></div>
+</div>
+
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<script>
+  const player = new Plyr('#player', {
+    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+    youtube: { noCookie: true, rel: 0, showinfo: 0, iv_load_policy: 3, modestbranding: 1 }
+  });
+
+  const blackScreen = document.getElementById('black-screen');
+
+  // --- دالة لإظهار الشاشة السوداء وإيقاف الفيديو ---
+  function activateProtection() {
+    blackScreen.style.display = 'flex'; // إظهار الطبقة السوداء
+    player.pause(); // إيقاف الفيديو مؤقتاً
+  }
+
+  // --- دالة لإخفاء الشاشة السوداء عند العودة ---
+  function deactivateProtection() {
+    // يمكن تركها سوداء حتى يضغط المستخدم "تشغيل" مرة أخرى، أو إخفاؤها تلقائياً
+    // blackScreen.style.display = 'none'; 
+  }
+
+  // 1. حماية عند الضغط على زر PrintScreen أو اختصارات النسخ
+  document.addEventListener('keydown', function(e) {
+    // التحقق من زر PrintScreen أو (Ctrl+P للطباعة) أو (Ctrl+S للحفظ)
+    if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 's'))) {
+      e.preventDefault();
+      activateProtection();
+      alert('تم إيقاف الفيديو. لقطات الشاشة غير مسموح بها.');
+    }
+  });
+
+  // 2. حماية عند فقدان التركيز (الخروج من النافذة لأخذ لقطة خارجية)
+  window.addEventListener('blur', function() {
+    // بمجرد أن يضغط المستخدم خارج المتصفح أو على شريط المهام
+    activateProtection();
+  });
+
+  // (اختياري) إعادة الفيديو عند العودة للتركيز
+  window.addEventListener('focus', function() {
+    // إذا أردت إخفاء السواد تلقائياً
+    // blackScreen.style.display = 'none';
+  });
+
+  // 3. منع النقر الأيمن (لمنع خيارات الحفظ والنسخ)
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الفيديوهات الشارحة حسب الوحدات - الأستاذ بلعقاب أسامة</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+  <style>
+    /* تنسيقات الوحدات والفيديوهات */
+    .unit-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 28px;
+      border: 1.5px solid #edf0f5;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .unit-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .unit-section-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #240c66;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .unit-links-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .unit-links-pill a {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #7033ff;
+      background: #f5f2ff;
+      padding: 5px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .unit-links-pill a:hover {
+      background: #ede8ff;
+    }
+
+    .video-card-thumb {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0f172a;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    .video-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .video-card-thumb:hover img {
+      transform: scale(1.05);
+    }
+    .video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      background: rgba(239, 68, 68, 0.95);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 6px 22px rgba(239, 68, 68, 0.5);
+      transition: all 0.2s ease;
+    }
+    .video-card-thumb:hover .video-play-btn {
+      transform: translate(-50%, -50%) scale(1.15);
+      background: #dc2626;
+    }
+    .video-badge-hd {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.75);
+      color: #f8fafc;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      backdrop-filter: blur(4px);
+    }
+    .video-badge-unit {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(36, 12, 102, 0.85);
+      color: #ffd166;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    /* Modal مشغل الفيديو المباشر */
+    #videoModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .video-modal-content {
+      background: #18113c;
+      border-radius: 24px;
+      max-width: 860px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .video-iframe-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .video-iframe-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- 🎯 رأس الصفحة العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>🎥 الفيديوهات الشارحة المنظمة</h1>
+          <p>شروحات مرئية تفاعلية مقسمة حسب الوحدات الدراسية (دروس، تمارين، وفيديوهات)</p>
+        </div>
+      </div>
+      <div id="studentProfilePill"></div>
+    </header>
+
+    <!-- شريط تنبيه للزوار غير المسجلين -->
+    <div id="guestWarningBanner" style="display:none; width:100%; margin-bottom: 20px; background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; padding: 12px 18px; border-radius: 16px; font-weight: 700; font-size: 0.9rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-lock" style="color:#d97706; font-size:1.1rem;"></i>
+        <span>أنت تتصفح كزائر. لمشاهدة جميع فيديوهات وشروحات الأستاذ كاملة يرجى تسجيل الدخول برقم هاتفك والرمز السري.</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <a href="login.html" style="background:#d97706; color:#fff; text-decoration:none; padding:6px 14px; border-radius:10px; font-size:0.82rem; font-weight:800;">تسجيل الدخول</a>
+        <a href="register.html" style="background:#fef3c7; color:#92400e; text-decoration:none; padding:6px 14px; border-radius:10px; font-size:0.82rem; font-weight:800;">إنشاء حساب</a>
+      </div>
+    </div>
+
+    <!-- 🎯 شريط البحث وتصفية الوحدات -->
+    <div class="search-filter-bar">
+      <div class="search-input-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="videoSearchInput" placeholder="ابحث عن فيديو، فكرة، أو درس مشروح داخل الوحدات...">
+      </div>
+
+      <!-- أشرطة الوحدات -->
+      <div class="units-scroll" id="unitsTabs">
+        <button class="unit-pill active" data-unit="all">
+          <i class="fa-solid fa-layer-group"></i> كل الوحدات
+        </button>
+      </div>
+    </div>
+
+    <!-- 🎯 منطقة عرض الفيديوهات مقسمة بالوحدات -->
+    <div id="videosUnitsContainer">
+      <div class="empty-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>جاري تحميل الوحدات والفيديوهات الشارحة من Turso...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🎯 مشغل الفيديو المباشر في نفس الصفحة (In-Page Video Player) -->
+  <div id="videoModal">
+    <div class="video-modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 22px; background:#240c66; color:#fff;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-circle-play" style="color:#ffb703; font-size:1.2rem;"></i>
+          <h3 id="modalVideoTitle" style="font-size:1.05rem; font-weight:800; margin:0;">مشاهدة الفيديو</h3>
+        </div>
+        <button type="button" onclick="closeVideoModal()" style="background:rgba(255,255,255,0.15); border:none; color:#fff; width:34px; height:34px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="video-iframe-wrapper">
+        <iframe id="videoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div style="padding:14px 22px; display:flex; justify-content:space-between; align-items:center; background:#18113c; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:0.85rem; color:#cbd5e1;">الأستاذ بلعقاب أسامة - مادة الرياضيات تحضير BAC 2027</span>
+        <span style="font-size:0.8rem; color:#a78bfa; background:rgba(255,255,255,0.08); padding:4px 10px; border-radius:8px;">
+          🔒 محتوى محمي وخاص بالتلاميذ المسجلين
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="videos.html" class="nav-item active">
+      <i class="fa-solid fa-circle-play"></i>
+      <span>الفيديوهات</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    let allVideos = [];
+    let allUnits = [];
+    let currentUnitFilter = "all";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const unitsTabsContainer = document.getElementById("unitsTabs");
+      const container = document.getElementById("videosUnitsContainer");
+      const searchInput = document.getElementById("videoSearchInput");
+      const guestBanner = document.getElementById("guestWarningBanner");
+
+      if (guestBanner && !window.AppAPI.isLoggedIn()) {
+        guestBanner.style.display = "flex";
+      }
+
+      // 1. تحميل الوحدات
+      allUnits = await window.AppAPI.getUnits();
+      allUnits.forEach(u => {
+        const btn = document.createElement("button");
+        btn.className = "unit-pill";
+        btn.dataset.unit = u.id;
+        btn.innerHTML = `${u.name}`;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".unit-pill").forEach(p => p.classList.remove("active"));
+          btn.classList.add("active");
+          currentUnitFilter = u.id;
+          renderOrganizedVideos();
+        });
+        unitsTabsContainer.appendChild(btn);
+      });
+
+      // زر "كل الوحدات"
+      document.querySelector('[data-unit="all"]').addEventListener("click", (e) => {
+        document.querySelectorAll(".unit-pill").forEach(p => p.classList.remove("active"));
+        e.currentTarget.classList.add("active");
+        currentUnitFilter = "all";
+        renderOrganizedVideos();
+      });
+
+      // 2. تحميل الفيديوهات من Turso
+      allVideos = await window.AppAPI.getVideos();
+      renderOrganizedVideos();
+
+      // البحث المباشر
+      searchInput.addEventListener("input", () => {
+        renderOrganizedVideos();
+      });
+
+      function renderOrganizedVideos() {
+        const q = searchInput.value.trim().toLowerCase();
+        let targetUnits = allUnits;
+
+        if (currentUnitFilter !== "all") {
+          targetUnits = allUnits.filter(u => u.id == currentUnitFilter);
+        }
+
+        let html = "";
+        let totalRendered = 0;
+
+        targetUnits.forEach(unit => {
+          let unitVids = allVideos.filter(v => v.unit_id == unit.id || (unit.name.includes("الدوال") && v.unit_name.includes("الدوال")));
+          if (q) {
+            unitVids = unitVids.filter(v => 
+              v.title.toLowerCase().includes(q) || 
+              v.unit_name.toLowerCase().includes(q)
+            );
+          }
+
+          if (currentUnitFilter !== "all" || unitVids.length > 0) {
+            totalRendered += unitVids.length;
+            html += `
+              <div class="unit-section">
+                <div class="unit-section-header">
+                  <div class="unit-section-title">
+                    <i class="fa-solid fa-folder-open" style="color:#7033ff;"></i>
+                    <span>الوحدة: ${unit.name}</span>
+                    <span style="font-size:0.8rem; background:#ede9fe; color:#6b21a8; padding:3px 10px; border-radius:12px; font-weight:800;">
+                      ${unitVids.length} فيديو
+                    </span>
+                  </div>
+                  <div class="unit-links-pill">
+                    <a href="lessons.html?unit_id=${unit.id}"><i class="fa-solid fa-book-open"></i> دروس الوحدة</a>
+                    <a href="exercises.html?unit_id=${unit.id}"><i class="fa-solid fa-pen-to-square"></i> تمارين الوحدة</a>
+                  </div>
+                </div>
+
+                ${unitVids.length === 0 ? `
+                  <div style="text-align:center; padding:24px 10px; color:#94a3b8; font-size:0.9rem;">
+                    <i class="fa-regular fa-clock" style="font-size:24px; margin-bottom:8px; display:block;"></i>
+                    سيتم نشر شروحات فيديو جديدة لهذه الوحدة قريباً من طرف الأستاذ أسامة.
+                  </div>
+                ` : `
+                  <div class="items-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                    ${unitVids.map(v => `
+                      <div class="feature-card">
+                        <div class="video-card-thumb" onclick="playVideo('${v.youtube_id}', '${escapeHtml(v.title)}')">
+                          <img src="https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg" alt="${v.title}" loading="lazy" onerror="this.src='images/teacher-image.png'">
+                          <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+                          <span class="video-badge-hd">HD 1080p</span>
+                          <span class="video-badge-unit">${unit.name}</span>
+                        </div>
+                        <div>
+                          <div class="card-top">
+                            <span class="card-unit-badge"><i class="fa-solid fa-film"></i> ${unit.name}</span>
+                            <span class="card-status-badge active"><i class="fa-solid fa-circle-check"></i> مفعّل</span>
+                          </div>
+                          <h3 class="card-title">${v.title}</h3>
+                          <p class="card-desc">شرح فيديو منهجي مفصل مع حل مسائل بكالوريا هامة وتطبيقات عملية.</p>
+                        </div>
+                        <div class="card-actions">
+                          <button onclick="playVideo('${v.youtube_id}', '${escapeHtml(v.title)}')" class="btn-primary-action" style="cursor:pointer; border:none; width:100%;">
+                            <i class="fa-solid fa-circle-play"></i> مشاهدة الفيديو مباشرة في الموقع
+                          </button>
+                        </div>
+                      </div>
+                    `).join("")}
+                  </div>
+                `}
+              </div>
+            `;
+          }
+        });
+
+        if (totalRendered === 0 && currentUnitFilter === "all" && q) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <h3>لا توجد فيديوهات مطابقة لبحثك</h3>
+              <p>حاول البحث بكلمة مفتاحية أخرى أو اختر وحدة معينة.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = html;
+      }
+    });
+
+    function escapeHtml(text) {
+      return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    // تشغيل الفيديو مباشرة داخل الموقع بدون خروج
+    function playVideo(youtubeId, title) {
+      window.AppAPI.requireAuth(() => {
+        const modal = document.getElementById("videoModal");
+        const iframe = document.getElementById("videoIframe");
+        const titleEl = document.getElementById("modalVideoTitle");
+
+        titleEl.textContent = title || "مشاهدة الفيديو";
+        iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+        modal.style.display = "flex";
+      }, "عذراً! مشاهدة الفيديوهات الشارحة مخصصة فقط لتلاميذ الأستاذ بلعقاب أسامة المسجلين.");
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById("videoModal");
+      const iframe = document.getElementById("videoIframe");
+      iframe.src = "";
+      modal.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

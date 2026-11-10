@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مشغل Video.js المحمي</title>
+
+  <!-- استخدام إصدار Video.js 7.21 المتوافق كلياً مع YouTube -->
+  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
+  
+  <style>
+    .vjs-container-wrapper {
+      position: relative;
+      max-width: 800px;
+      margin: 30px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: filter 0.1s ease;
+      background-color: #000;
+    }
+
+    .video-js {
+      width: 100%;
+      height: 450px;
+    }
+
+    /* 1. طبقة التردد السريع (Strobe) مع السماح بالنقر */
+    .strobe-protection {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      pointer-events: none; /* يسمح بالضغط على أزرار الفيديو تحتها */
+      z-index: 2;
+      opacity: 0;
+      animation: strobe 0.04s infinite;
+    }
+
+    @keyframes strobe {
+      0% { opacity: 0; }
+      50% { opacity: 0.92; }
+      100% { opacity: 0; }
+    }
+
+    /* 2. طبقة الشاشة السوداء عند اكتشاف PrintScreen */
+    #protection-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      color: white;
+      z-index: 10;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-family: sans-serif;
+    }
+
+    @media print {
+      body { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="vjs-container-wrapper" id="videoWrapper">
+  
+  <!-- الشاشة السوداء عند الاكتشاف -->
+  <div id="protection-screen">عذراً، محتوى الفيديو محمي من لقطات الشاشة.</div>
+
+  <!-- الطبقة الترددية السوداء -->
+  <div class="strobe-protection"></div>
+
+  <!-- عنصر الفيديو -->
+  <video
+    id="my-video"
+    class="video-js vjs-default-skin vjs-big-play-centered"
+    controls
+    preload="auto"
+  >
+  </video>
+</div>
+
+<!-- مكتبات متوافقة بدون مشاكل إطلاقاً -->
+<script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-youtube@2.6.1/dist/Youtube.min.js"></script>
+
+<script>
+  // تهيئة مشغل Video.js عبر JavaScript مباشرة لضمان التوافق
+  const player = videojs('my-video', {
+    techOrder: ['youtube'],
+    sources: [{
+      type: 'video/youtube',
+      src: 'https://www.youtube.com/watch?v=9UrdZXS9Cy4' // رابط الفيديو الخاص بك
+    }],
+    youtube: {
+      iv_load_policy: 3,
+      modestbranding: 1,
+      rel: 0
+    }
+  });
+
+  const wrapper = document.getElementById('videoWrapper');
+  const protectionScreen = document.getElementById('protection-screen');
+
+  // 1. التعتيم الفوري عند خروج الماوس
+  if (wrapper) {
+    wrapper.addEventListener('mouseleave', () => {
+      wrapper.style.filter = 'brightness(0)';
+    });
+
+    wrapper.addEventListener('mouseenter', () => {
+      wrapper.style.filter = 'brightness(1)';
+    });
+
+    wrapper.addEventListener('contextmenu', (e) => e.preventDefault());
+  }
+
+  // 2. إظهار الشاشة السوداء عند ضغط PrintScreen
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 's'))) {
+      e.preventDefault();
+      if (protectionScreen) {
+        protectionScreen.style.display = 'flex';
+        player.pause();
+        
+        setTimeout(() => {
+          protectionScreen.style.display = 'none';
+        }, 2000);
+      }
+    }
+  });
+
+  // 3. تحويل الشاشة للأسود عند فقدان التركيز (تغيير النافذة أو أدوات القص)
+  window.addEventListener('blur', () => {
+    if (wrapper) wrapper.style.filter = 'brightness(0)';
+    player.pause();
+  });
+
+  window.addEventListener('focus', () => {
+    if (wrapper) wrapper.style.filter = 'brightness(1)';
+  });
+</script>
+
+</body>
+</html>

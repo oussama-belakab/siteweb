@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول - منصة الأستاذ بلعقاب للرياضيات</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background-color: #240c66;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #1e293b;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      background-color: #240c66;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 480px) {
+      body {
+        padding: 30px 15px;
+        background: radial-gradient(circle at 10% 20%, #2e107d 0%, #170642 90%);
+      }
+      .app-container {
+        min-height: auto;
+        border-radius: 32px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    /* البانر العلوي الترحيبي مع صورة الأستاذ */
+    .login-header {
+      position: relative;
+      padding: 24px 20px 32px 20px;
+      background-color: #240c66;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .math-watermark {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+      direction: ltr;
+      text-align: center;
+    }
+
+    .bg-shape {
+      position: absolute;
+      top: -40px;
+      left: -50px;
+      width: 220px;
+      height: 380px;
+      background: linear-gradient(135deg, #a672fb 0%, #8344f6 100%);
+      transform: rotate(-18deg);
+      border-radius: 40px;
+      z-index: 2;
+      opacity: 0.85;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      z-index: 3;
+    }
+
+    .teacher-info {
+      flex: 1.2;
+    }
+
+    .app-logo {
+      width: 50px;
+      height: 50px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7033ff;
+      font-size: 22px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .title-sub {
+      font-size: 13px;
+      color: #e2d5ff;
+      font-weight: 600;
+    }
+
+    .title-main {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+
+    .badge-year {
+      display: inline-block;
+      background-color: #8c50ff;
+      font-size: 11px;
+      padding: 3px 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .teacher-image {
+      flex: 1.1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+
+    .teacher-image img {
+      max-width: 135%;
+      max-height: 225px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+      transform: scale(1.15) translateY(24px);
+      transform-origin: bottom center;
+    }
+
+    /* بطاقة النموذج البيضاء */
+    .login-card {
+      background-color: #ffffff;
+      border-top-left-radius: 35px;
+      border-top-right-radius: 35px;
+      padding: 28px 24px;
+      flex: 1;
+      margin-top: -15px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ede9fe;
+      color: #6b21a8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .form-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #1e1b4b;
+      margin-bottom: 3px;
+    }
+
+    .form-subtitle {
+      font-size: 0.84rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #faf9fe;
+      border: 1.5px solid #ede9fe;
+      border-radius: 16px;
+      padding: 0 14px;
+      height: 52px;
+      transition: all 0.25s ease;
+    }
+
+    .input-group:focus-within {
+      border-color: #7033ff;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(112, 51, 255, 0.12);
+    }
+
+    .input-icon {
+      width: 32px;
+      height: 32px;
+      background-color: #f1edff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7033ff;
+      font-size: 14px;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+
+    .input-group input {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      height: 100%;
+    }
+
+    .input-group input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 0.88rem;
+    }
+
+    .toggle-password {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 8px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-right: 2px;
+    }
+
+    .toggle-password:hover {
+      color: #7033ff;
+    }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2px 0 6px 0;
+      font-size: 0.85rem;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748b;
+      cursor: pointer;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .remember-me input {
+      display: none;
+    }
+
+    .custom-checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #cbd5e1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: transparent;
+      font-size: 10px;
+    }
+
+    .remember-me input:checked + .custom-checkbox {
+      background: #7033ff;
+      border-color: #7033ff;
+      color: #ffffff;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #7033ff 0%, #5b1bf4 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 16px;
+      height: 52px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px -5px rgba(112, 51, 255, 0.4);
+      transition: all 0.2s ease;
+      margin-top: 4px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -5px rgba(112, 51, 255, 0.5);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 18px 0 14px 0;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+
+    .divider span {
+      padding: 0 14px;
+    }
+
+    .register-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+
+    .btn-primary-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      text-decoration: none;
+      padding: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7033ff 0%, #4b16c8 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 6px 18px rgba(112, 51, 255, 0.3);
+      transition: all 0.2s ease;
+      margin-bottom: 8px;
+    }
+
+    .btn-primary-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(112, 51, 255, 0.4);
+    }
+
+    .btn-secondary-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      text-decoration: none;
+      padding: 10px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #334155;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary-action:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 🎯 البانر العلوي الترحيبي مع صورة الأستاذ بلعقاب أسامة -->
+    <header class="login-header">
+      <div class="math-watermark">f(x)  ln(x)  e^x  ∫dx  π  a²+ax+b  √x  ∑</div>
+      <div class="bg-shape"></div>
+
+      <div class="header-content">
+        <div class="teacher-info">
+          <div class="app-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <span class="title-sub">مرحباً بك في</span>
+          <h1 class="title-main">منصة الأستاذ بلعقاب للرياضيات</h1>
+          <div class="badge-year">BAC 2027</div>
+        </div>
+
+        <div class="teacher-image">
+          <img src="images/teacher-image.png" alt="الأستاذ بلعقاب أسامة">
+        </div>
+      </div>
+    </header>
+
+    <!-- 🎯 بطاقة نموذج تسجيل الدخول -->
+    <main class="login-card">
+      <div style="text-align: center;">
+        <span class="step-badge"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول الرسمي</span>
+        <h2 class="form-title">تسجيل الدخول إلى حسابك</h2>
+        <p class="form-subtitle">أدخل رقم هاتفك والرمز السري الدائم للمتابعة</p>
+      </div>
+
+      <div id="loginAlert" style="display:none; padding:12px; border-radius:12px; font-size:0.9rem; margin-bottom:15px;"></div>
+
+      <form id="loginForm" class="login-form">
+        
+        <!-- حقل رقم الهاتف -->
+        <div class="input-group">
+          <div class="input-icon">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <input type="tel" id="loginPhone" placeholder="رقم الهاتف (05/06/07...)" required dir="rtl">
+        </div>
+
+        <!-- حقل كلمة المرور / الرمز السري -->
+        <div class="input-group">
+          <div class="input-icon">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <input type="text" id="loginPassword" placeholder="الرمز السري (مثال: R6ADIA)" required style="font-weight:700; letter-spacing:1px; text-transform:uppercase;">
+          <button type="button" class="toggle-password" id="togglePasswordBtn">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+
+        <p style="font-size:0.8rem; color:#64748b; margin: -4px 4px 6px 4px; text-align:right;">
+          <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> الرمز السري دائم وخاص بك تم إنشاؤه لك عند التسجيل ولا يمكن تغييره.
+        </p>
+
+        <!-- خيارات: تذكرني -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" id="rememberMe" checked>
+            <span class="custom-checkbox"><i class="fa-solid fa-check"></i></span>
+            <span>تذكرني على هذا الجهاز</span>
+          </label>
+        </div>
+
+        <!-- زر تسجيل الدخول الأساسي -->
+        <button type="submit" id="loginSubmitBtn" class="submit-btn">
+          <span>تسجيل الدخول</span>
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+
+      </form>
+
+      <!-- فاصل وبوت التليجرام -->
+      <div class="divider">
+        <span>أو</span>
+      </div>
+
+      <!-- خيارات إنشاء حساب جديد (من الموقع أو البوت) -->
+      <div class="register-box">
+        <p style="font-size:0.95rem; color:#1e293b; margin-bottom:8px; font-weight:800;">
+          <i class="fa-solid fa-user-plus" style="color:#7033ff;"></i> ليس لديك حساب بعد؟
+        </p>
+        <p style="font-size:0.82rem; color:#64748b; line-height:1.5; margin-bottom:14px;">
+          يمكنك إنشاء حسابك مباشرة من الموقع أو عبر بوت التليجرام للحصول على الرمز السري الدائم:
+        </p>
+        
+        <!-- زر إنشاء حساب جديد عبر الموقع مباشرة -->
+        <a href="register.html" class="btn-primary-action">
+          <i class="fa-solid fa-id-card"></i>
+          <span>إنشاء حساب جديد عبر الموقع الآن</span>
+        </a>
+
+        <!-- أو التسجيل عبر بوت التليجرام -->
+        <a href="https://t.me/Belakab_math_bot" target="_blank" class="btn-secondary-action">
+          <i class="fa-brands fa-telegram" style="color:#0088cc; font-size:1.1rem;"></i>
+          <span>أو التسجيل عبر بوت التليجرام</span>
+        </a>
+      </div>
+
+      <div style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="font-size:0.85rem; color:#64748b; text-decoration:none; font-weight:600;">
+          <i class="fa-solid fa-arrow-right"></i> متابعة التصفح كزائر
+        </a>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/app-api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const API_BASE = (window.location.protocol === "http:" || window.location.protocol === "https:") ? "" : "http://localhost:5000";
+      const loginForm = document.getElementById("loginForm");
+      const phoneInput = document.getElementById("loginPhone");
+      const passwordInput = document.getElementById("loginPassword");
+      const submitBtn = document.getElementById("loginSubmitBtn");
+      const alertBox = document.getElementById("loginAlert");
+      const togglePwBtn = document.getElementById("togglePasswordBtn");
+
+      // إظهار/إخفاء كلمة المرور
+      if (togglePwBtn) {
+        togglePwBtn.addEventListener("click", () => {
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          togglePwBtn.querySelector("i").classList.toggle("fa-eye");
+          togglePwBtn.querySelector("i").classList.toggle("fa-eye-slash");
+        });
+      }
+
+      function showAlert(msg, isError = true) {
+        alertBox.style.display = "block";
+        alertBox.style.background = isError ? "#fef2f2" : "#f0fdf4";
+        alertBox.style.color = isError ? "#dc2626" : "#16a34a";
+        alertBox.style.border = `1px solid ${isError ? '#fecaca' : '#bbf7d0'}`;
+        alertBox.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-xmark' : 'fa-circle-check'}"></i> ${msg}`;
+      }
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alertBox.style.display = "none";
+
+        const phone = phoneInput.value.trim().replace(/[\s\-]/g, '');
+        const password = passwordInput.value.trim();
+
+        if (!phone || !password) {
+          showAlert("يرجى إدخال رقم الهاتف والرمز السري.", true);
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
+
+        try {
+          const res = await fetch(`${API_BASE}/api/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone, password })
+          });
+
+          const data = await res.json();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>تسجيل الدخول</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+
+          if (data.success && data.user) {
+            alertBox.style.display = "block";
+            alertBox.style.background = "#f0fdf4";
+            alertBox.style.color = "#16a34a";
+            alertBox.style.border = "1.5px solid #bbf7d0";
+            alertBox.style.padding = "14px";
+            alertBox.innerHTML = '<div style="font-weight:900; font-size:1rem; text-align:center;"><i class="fa-solid fa-circle-check"></i> الحساب مفعّل! مرحباً بك، جاري تحويلك إلى المنصة...</div>';
+            
+            if (window.AppAPI && window.AppAPI.setCurrentStudent) {
+              window.AppAPI.setCurrentStudent(data.user);
+            } else {
+              localStorage.setItem("math_current_student", JSON.stringify(data.user));
+            }
+
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 800);
+
+          } else if (data.is_active === 0 || data.is_active === -1 || data.needs_activation || data.is_banned) {
+            // الحساب غير مفعل أو تم حظره/حذفه
+            alertBox.style.display = "block";
+            alertBox.style.background = "#fff";
+            alertBox.style.padding = "0";
+            alertBox.style.border = "none";
+            alertBox.innerHTML = `
+              <div style="background:#fef2f2; border:2px solid #ef4444; border-radius:18px; padding:18px 16px; text-align:right; box-shadow:0 10px 25px rgba(239,68,68,0.12); margin-bottom:15px;">
+                <div style="color:#b91c1c; font-weight:900; font-size:1rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-circle-xmark" style="font-size:1.3rem; color:#dc2626;"></i>
+                  <span>غير مفعّل! الموقع خاص بتلاميذ الأستاذ بلعقاب أسامة فقط</span>
+                </div>
+                <p style="color:#7f1d1d; font-size:0.86rem; line-height:1.6; margin:0 0 12px 0; font-weight:700;">
+                  حسابك غير مفعل حالياً لدى الأستاذ. لتفعيل حسابك والموافقة على دخولك للمنصة، يرجى إرسال رسالة مباشرة للأستاذ بلعقاب أسامة عبر حسابه في إنستغرام.
+                </p>
+                <a href="https://www.instagram.com/prof_oussama_maths" target="_blank" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; background:linear-gradient(135deg, #e1306c 0%, #c13584 100%); color:#fff; text-decoration:none; padding:11px; border-radius:12px; font-weight:900; font-size:0.88rem; box-shadow:0 4px 15px rgba(225,48,108,0.25);">
+                  <i class="fa-brands fa-instagram" style="font-size:1.2rem;"></i>
+                  <span>إرسال رسالة للأستاذ لتفعيل الحساب 📩</span>
+                </a>
+              </div>
+            `;
+          } else {
+            showAlert(data.error || "الرمز السري أو رقم الهاتف غير صحيح. تأكد من صحة بياناتك.", true);
+          }
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>تسجيل الدخول</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+          showAlert("تعذر الاتصال بالخادم، يرجى إعادة المحاولة.", true);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

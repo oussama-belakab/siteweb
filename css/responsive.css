@@ -1,0 +1,221 @@
+/* ==========================================
+   1. الضبط العام وخلفية الصفحة
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+body {
+  background-color: #f4f6f9; /* خلفية الـ Body رمادية فاتحة لتمييز الكروت */
+  min-height: 100vh;
+  padding-bottom: 80px; /* مسافة تتناسب مع الشريط السفلي */
+}
+
+/* ==========================================
+   2. البانر العلوي والخلفية الهندسية (Hero Banner)
+   ========================================== */
+.hero-banner {
+  position: relative;
+  /* خلفية تجمع بين التدرج الأزرق بالكامل مع زاوية صفراء مطابقة للتطبيق */
+  background: radial-gradient(circle at 100% 0%, #ffc107 0%, #ffc107 28%, transparent 29%),
+              linear-gradient(135deg, #013488 0%, #00225d 100%);
+  color: #ffffff;
+  padding: 10px 20px 0 20px;
+  overflow: hidden;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* الشريط العلوي داخل البانر (الأيقونات) */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+/* أزرار الأيقونات العلويّة */
+.icon-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 22px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* شارة عدد الإشعارات */
+.notification-btn .badge {
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  background-color: #ffc107;
+  color: #000000;
+  font-size: 11px;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #013488;
+}
+
+/* ==========================================
+   3. تنسيق النصوص وشارات البانر
+   ========================================== */
+/* ترتيب محتوى البانر (عكس الاتجاه لتكون الصورة يميناً والنص يساراً) */
+.banner-content {
+  display: flex;
+  flex-direction: row-reverse; /* 👈 هذه الخاصية هي التي تعكس أماكن العناصر */
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+}
+
+.banner-text {
+  padding-bottom: 25px;
+  flex: 1;
+  text-align: left; /* 👈 محاذاة النص لليسار */
+}
+
+/* محاذاة الشعار والنجمة لليسار */
+.motto {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 👈 يبدأ من اليسار */
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+/* كلمة "الأستاذ" */
+.title-sub {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* الاسم الرئيسي: "بلعقاب أسامة" (أصفر) */
+.title-main {
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffc107; /* اللون الأصفر المطابق */
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+/* التخصص: "أستاذ الرياضيات" */
+.subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d0e1ff;
+  margin-bottom: 10px;
+}
+
+/* شارة السنة الدراسية: BAC 2027 */
+.badge-year {
+  display: inline-block;
+  background-color: #ffc107;
+  color: #00225d;
+  font-weight: 900;
+  font-size: 13px;
+  padding: 3px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* شعار: "نحو العلامة الكاملة" */
+.motto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.motto i {
+  color: #ffc107;
+  font-size: 15px;
+}
+
+/* ==========================================
+   4. تنسيق صورة الأستاذ
+   ========================================== */
+.banner-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.banner-image img {
+  max-width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================
+   5. شريط التنقل السفلي (Bottom Navigation)
+   ========================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.06);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  z-index: 1000;
+  padding: 0 10px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #8e8e93; /* اللون غير النشط */
+  font-size: 12px;
+  font-weight: 700;
+  transition: color 0.2s ease-in-out;
+  width: 20%;
+}
+
+.nav-item i {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+
+/* العنصر المحدد حالياً (Active) */
+.nav-item.active {
+  color: #004bb7;
+}
+
+.nav-item:hover {
+  color: #004bb7;
+}

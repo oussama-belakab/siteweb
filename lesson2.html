@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مشغل الفيديو</title>
+  <!-- استدعاء تنسيقات Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    .video-container {
+      max-width: 800px;
+      margin: 20px auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+<div class="video-container">
+  <!-- عنصر الفيديو يضم معرّف يوتيوب -->
+  <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="9UrdZXS9Cy4"></div>
+</div>
+
+<!-- استدعاء مكتبة Plyr JS -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<script>
+  // تهيئة المشغل وتخصيص الخيارات لإخفاء أدوات يوتيوب
+  const player = new Plyr('#player', {
+    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+    youtube: { 
+      noCookie: true,      // حماية الخصوصية
+      rel: 0,              // عدم إظهار فيديوهات مقترحة من قنوات أخرى عند الانتهاء
+      showinfo: 0,         // إخفاء عنوان الفيديو
+      iv_load_policy: 3,   // إخفاء البطاقات التفاعلية
+      modestbranding: 1    // تقليل إظهار شعار يوتيوب
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حسابي - الأستاذ بلعقاب أسامة</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+
+  <style>
+    .profile-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #240c66, #7033ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 2.4rem;
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(112,51,255,0.3);
+    }
+    .profile-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #240c66;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .profile-badge {
+      display: inline-block;
+      background: #ede9fe;
+      color: #6b21a8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .info-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1.5px solid #edf0f5;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .info-card-header {
+      background: linear-gradient(135deg, #240c66, #3a1699);
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 10px;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .info-label i {
+      width: 20px;
+      text-align: center;
+      color: #7033ff;
+    }
+    .info-value {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #1e293b;
+      text-align: left;
+      word-break: break-all;
+    }
+    .code-value {
+      font-family: monospace;
+      background: #f5f2ff;
+      color: #6b21a8;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+    .toggle-code-btn {
+      background: none;
+      border: none;
+      color: #7033ff;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0;
+    }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      border: none;
+      border-radius: 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(239,68,68,0.3);
+      margin-top: 8px;
+      transition: opacity 0.2s;
+    }
+    .logout-btn:active {
+      opacity: 0.85;
+    }
+    .login-prompt {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .login-prompt i {
+      font-size: 3rem;
+      color: #d97706;
+      margin-bottom: 16px;
+    }
+    .login-prompt h3 {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    .login-prompt p {
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+    .login-prompt a {
+      display: inline-block;
+      background: linear-gradient(135deg, #7033ff, #240c66);
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- 🎯 شريط العنوان العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>👤 حسابي</h1>
+          <p>معلوماتك الشخصية وإعدادات حسابك</p>
+        </div>
+      </div>
+      <span class="subpage-badge">BAC 2027</span>
+    </header>
+
+    <!-- محتوى الصفحة -->
+    <div id="profileContent">
+      <div class="empty-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>جاري تحميل بيانات حسابك...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="homework.html" class="nav-item">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+    <a href="profile.html" class="nav-item active">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("profileContent");
+      const student = window.AppAPI ? window.AppAPI.getCurrentStudent() : null;
+
+      if (!student || (!student.phone && !student.full_name)) {
+        container.innerHTML = `
+          <div class="login-prompt">
+            <i class="fa-solid fa-lock"></i>
+            <h3>يرجى تسجيل الدخول أولاً</h3>
+            <p>لعرض معلومات حسابك يجب أن تكون مسجلاً في المنصة.</p>
+            <a href="login.html">تسجيل الدخول</a>
+          </div>
+        `;
+        return;
+      }
+
+      // بناء الاسم الكامل
+      const firstName = student.first_name || "";
+      const lastName  = student.last_name  || "";
+      const fullName  = student.full_name  || `${firstName} ${lastName}`.trim() || "—";
+      const phone     = student.phone   || "—";
+      const school    = student.school  || "—";
+      const branch    = student.branch  || student.specialty || "—";
+      const code      = student.code    || "—";
+
+      // الحرف الأول للصورة الرمزية
+      const initial = fullName.charAt(0) || "ط";
+
+      container.innerHTML = `
+        <!-- صورة الحساب والاسم -->
+        <div style="text-align:center; margin-bottom:24px; padding:28px 20px 20px;">
+          <div class="profile-avatar">${initial}</div>
+          <div class="profile-name">${fullName}</div>
+          <div style="text-align:center; margin-top:8px;">
+            <span class="profile-badge">🎓 تلميذ باكالوريا 2027</span>
+          </div>
+        </div>
+
+        <!-- بطاقة المعلومات الشخصية -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <i class="fa-solid fa-id-card"></i> المعلومات الشخصية
+          </div>
+
+          <div class="info-row">
+            <span class="info-label"><i class="fa-solid fa-user"></i> الاسم</span>
+            <span class="info-value">${firstName || fullName.split(" ")[0] || "—"}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label"><i class="fa-solid fa-signature"></i> اللقب</span>
+            <span class="info-value">${lastName || fullName.split(" ").slice(1).join(" ") || "—"}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label"><i class="fa-solid fa-school"></i> المدرسة</span>
+            <span class="info-value">${school}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label"><i class="fa-solid fa-layer-group"></i> الشعبة</span>
+            <span class="info-value">${branch}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label"><i class="fa-solid fa-phone"></i> الهاتف</span>
+            <span class="info-value" dir="ltr">${phone}</span>
+          </div>
+        </div>
+
+        <!-- بطاقة الرمز السري -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <i class="fa-solid fa-key"></i> رمز الدخول السري
+          </div>
+          <div class="info-row" style="justify-content:space-between;">
+            <span class="info-label"><i class="fa-solid fa-lock"></i> الرمز السري</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="code-value" id="codeDisplay">••••••</span>
+              <button class="toggle-code-btn" onclick="toggleCode('${code}')">
+                <i class="fa-solid fa-eye" id="toggleIcon"></i>
+              </button>
+            </div>
+          </div>
+          <div style="padding:10px 20px 14px; font-size:0.8rem; color:#64748b; display:flex; align-items:flex-start; gap:8px;">
+            <i class="fa-solid fa-circle-info" style="color:#7033ff; margin-top:2px; flex-shrink:0;"></i>
+            <span>احتفظ بهذا الرمز لنفسك. يُستخدم لتسجيل الدخول في الموقع. لا تشاركه مع أي شخص.</span>
+          </div>
+        </div>
+
+        <!-- زر تسجيل الخروج -->
+        <button class="logout-btn" onclick="confirmLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          تسجيل الخروج من الحساب
+        </button>
+      `;
+    });
+
+    let codeVisible = false;
+    function toggleCode(code) {
+      const display = document.getElementById("codeDisplay");
+      const icon = document.getElementById("toggleIcon");
+      codeVisible = !codeVisible;
+      display.textContent = codeVisible ? code : "••••••";
+      icon.className = codeVisible ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+    }
+
+    function confirmLogout() {
+      if (confirm("هل تريد تسجيل الخروج من حسابك؟")) {
+        window.AppAPI.logout();
+      }
+    }
+  </script>
+
+</body>
+</html>

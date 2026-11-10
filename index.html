@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الأستاذ بلعقاب أسامة</title>
+  
+  <!-- خط Cairo بأوزان مختلفة -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- مكتبة الأيقونات Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- ربط ملف التنسيقات الخارجية -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <!-- 👈 ربط ملف JavaScript هنا -->
+  <script src="js/main.js" defer></script>
+  <script src="js/app-api.js" defer></script>
+
+  
+</head>
+<body>
+
+  <!-- 🎯 البانر العلوي بالكامل (Hero Banner) -->
+  <header class="hero-banner">
+
+    <!-- الشريط العلوي والتفاعل مع حساب التلميذ -->
+    <div class="top-header">
+      <!-- زر القائمة الجانبية -->
+      <button class="icon-btn menu-btn" aria-label="القائمة">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- مساحة هوية التلميذ المسجل أو زر الدخول -->
+      <div id="studentProfilePill">
+        <a href="login.html" style="color:#ffffff; text-decoration:none; font-size:0.85rem; font-weight:800; background:rgba(255,255,255,0.16); padding:6px 14px; border-radius:20px; display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.2);">
+          <i class="fa-regular fa-user"></i>
+          <span>تسجيل الدخول</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- محتوى البانر الرئيسي -->
+    <div class="banner-content">
+      
+      <!-- النصوص والشارات على اليمين -->
+      <div class="banner-text">
+        <h2 class="title-sub">الأستاذ</h2>
+        <h1 class="title-main">بلعقاب أسامة</h1>
+        <p class="subtitle">أستاذ الرياضيات</p>
+        
+        <div class="badge-year">BAC 2027</div>
+        
+        <div class="motto">
+          <span>نحو العلامة الكاملة</span>
+          <i class="fa-solid fa-bullseye"></i>
+        </div>
+      </div>
+
+      <!-- صورة الأستاذ على اليسار -->
+      <div class="banner-image">
+        <!-- ضع مسار صورتك هنا -->
+        <img src="images/teacher-image.png" alt="الأستاذ بلعقاب أسامة">
+      </div>
+
+    </div>
+    
+  </header>
+
+  <!-- 🎯 شبكة الخدمات والأقسام المطابقة تماماً لأزرار بوت التيليجرام -->
+<section class="services-grid telegram-grid">
+  
+  <!-- 1. 📘 الدروس -->
+  <a href="lessons.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-book-open"></i>
+    </div>
+    <h3 class="service-title">الدروس</h3>
+    <p class="service-desc">جميع الدروس المقررة</p>
+  </a>
+
+  <!-- 2. 📝 التمارين والحلول -->
+  <a href="exercises.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-pen-to-square"></i>
+    </div>
+    <h3 class="service-title">التمارين والحلول</h3>
+    <p class="service-desc">سلاسل تدريبية محلولة</p>
+  </a>
+
+  
+  <!-- 🎥 الفيديوهات الشارحة -->
+  <a href="videos.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-circle-play"></i>
+    </div>
+    <h3 class="service-title">الفيديوهات الشارحة</h3>
+    <p class="service-desc">شروحات مرئية تفاعلية</p>
+  </a>
+
+  <!-- 3. 📤 إرسال محاولة حل واجب -->
+  <a href="homework.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-file-arrow-up"></i>
+    </div>
+    <h3 class="service-title">إرسال الواجبات</h3>
+    <p class="service-desc">تسليم محاولات الحل</p>
+  </a>
+
+  <!-- 4. 📊 علامتي في الواجبات -->
+  <a href="grades.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-chart-line"></i>
+    </div>
+    <h3 class="service-title">علامتي في الواجبات</h3>
+    <p class="service-desc">التصحيح والملاحظات</p>
+  </a>
+
+  <!-- 5. 📂 مواضيع BAC -->
+  <a href="bac.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-graduation-cap"></i>
+    </div>
+    <h3 class="service-title">مواضيع BAC</h3>
+    <p class="service-desc">حوليات رسمية مصححة</p>
+  </a>
+
+  <!-- 6. 📁 ملفات متنوعة -->
+  <a href="files.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-folder-open"></i>
+    </div>
+    <h3 class="service-title">ملفات متنوعة</h3>
+    <p class="service-desc">مستندات ومراجع إضافية</p>
+  </a>
+
+  <!-- 7. 💬 تواصل مع الأستاذ -->
+  <a href="chat.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-comments"></i>
+    </div>
+    <h3 class="service-title">تواصل مع الأستاذ</h3>
+    <p class="service-desc">محادثة واستفسارات</p>
+  </a>
+
+  <!-- 8. 🤖 البوت الآلي لحل التمارين -->
+  <a href="ai-bot.html" class="service-card">
+    <div class="service-icon">
+      <i class="fa-solid fa-robot"></i>
+    </div>
+    <h3 class="service-title">البوت الآلي</h3>
+    <p class="service-desc">مساعد حل التمارين</p>
+  </a>
+
+</section>
+
+
+<!-- 🎯 قسم آخر الدروس -->
+<section class="latest-lessons">
+  
+  <!-- عنوان القسم -->
+  <div class="section-header">
+    <h2 class="section-title">آخر الدروس</h2>
+  </div>
+
+  <!-- قائمة الدروس -->
+  <div class="lessons-list">
+    
+    <!-- الدرس الأول: المتتاليات العددية -->
+    <a href="lesson.html" class="lesson-card">
+      <div class="lesson-info">
+        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+        <div class="lesson-details">
+          <h3 class="lesson-title">المتتاليات العددية</h3>
+          <p class="lesson-desc">تعريف المتتالية وأنواعها</p>
+          <span class="lesson-tag">متتاليات</span>
+        </div>
+      </div>
+      <div class="lesson-media">
+        <div class="thumbnail">
+          <!-- خلفية مصغرة الفيديو -->
+          <span class="lesson-code">المتتاليات العددية</span>
+          <span class="duration">23:15</span>
+        </div>
+        <div class="play-btn">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- الدرس الثاني: الدالة اللوغاريتمية -->
+    <a href="lesson2.html" class="lesson-card">
+      <div class="lesson-info">
+        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+        <div class="lesson-details">
+          <h3 class="lesson-title">الدالة اللوغاريتمية ln(x)</h3>
+          <p class="lesson-desc">خصائص الدالة اللوغاريتمية</p>
+          <span class="lesson-tag">دوال</span>
+        </div>
+      </div>
+      <div class="lesson-media">
+        <div class="thumbnail">
+          <span class="lesson-code">ln(x)</span>
+          <span class="duration">28:40</span>
+        </div>
+        <div class="play-btn">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- الدرس الثالث: الدالة الأسية -->
+    <a href="lesson3.html" class="lesson-card">
+      <div class="lesson-info">
+        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+        <div class="lesson-details">
+          <h3 class="lesson-title">الدالة الأسية exp(x)</h3>
+          <p class="lesson-desc">النهايات والدراسة</p>
+          <span class="lesson-tag">دوال</span>
+        </div>
+      </div>
+      <div class="lesson-media">
+        <div class="thumbnail">
+          <span class="lesson-code">e<sup>x</sup></span>
+          <span class="duration">26:30</span>
+        </div>
+        <div class="play-btn">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- زر عرض المزيد -->
+  <a href="lessons.html" class="more-btn">
+    <i class="fa-solid fa-chevron-left"></i>
+    <span>عرض المزيد</span>
+  </a>
+
+</section>
+
+<!-- 🎯 البانر السفلي كصورة كاملة -->
+<section class="goal-banner-image">
+  <a href="#">
+    <img src="images/goal-banner.png" alt="هدفنا واحد - نجاحك في البكالوريا">
+  </a>
+</section>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    
+    <!-- الرئيسية -->
+    <a href="#" class="nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+
+    <!-- الدروس -->
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+
+    <!-- التمارين -->
+    <a href="videos.html" class="nav-item">
+      <i class="fa-solid fa-circle-play"></i>
+      <span>الفيديوهات</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+
+    <!-- الواجبات -->
+    <a href="homework.html" class="nav-item">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+
+    <!-- حسابي -->
+    <a href="profile.html" class="nav-item">
+      <i class="fa-regular fa-user"></i>
+      <span>حسابي</span>
+    </a>
+
+  </nav>
+
+  <!-- 🎯 القائمة الجانبية المنبثقة (Overlay Menu) -->
+<div class="side-menu-overlay" id="sideMenu">
+  <div class="side-menu-content">
+    
+    <!-- زر الإغلاق X -->
+    <button class="close-menu-btn" id="closeMenuBtn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- عناصر القائمة -->
+    <nav class="menu-items">
+      <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
+      <a href="lessons.html" class="menu-item"><i class="fa-solid fa-book-open"></i> 📘 الدروس</a>
+      <a href="exercises.html" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 📝 التمارين والحلول</a>
+      <a href="homework.html" class="menu-item"><i class="fa-solid fa-file-arrow-up"></i> 📤 إرسال محاولة حل واجب</a>
+      <a href="grades.html" class="menu-item"><i class="fa-solid fa-chart-line"></i> 📊 علامتي في الواجبات</a>
+      <a href="bac.html" class="menu-item"><i class="fa-solid fa-graduation-cap"></i> 📂 مواضيع BAC</a>
+      <a href="files.html" class="menu-item"><i class="fa-solid fa-folder-open"></i> 📁 ملفات متنوعة</a>
+      <a href="chat.html" class="menu-item"><i class="fa-solid fa-comments"></i> 💬 تواصل مع الأستاذ</a>
+      <a href="ai-bot.html" class="menu-item"><i class="fa-solid fa-robot"></i> 🤖 البوت الآلي لحل التمارين</a>
+      <a href="help.html" class="menu-item"><i class="fa-solid fa-circle-info"></i> ℹ️ مساعدة ومعلومات</a>
+      <a href="login.html" class="menu-item"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول</a>
+      <a href="register.html" class="menu-item"><i class="fa-solid fa-user-plus"></i> إنشاء حساب</a></nav>
+
+    <!-- تحديد الدولة / اللغة -->
+    <div class="country-selector">
+      <i class="fa-solid fa-caret-down arrow-down"></i>
+      <img src="https://flagcdn.com/w40/dz.png" alt="الجزائر" class="flag-icon">
+    </div>
+
+    <!-- زر تسجيل الخروج -->
+    <div class="logout-wrapper">
+      <a href="login.html" class="logout-btn">تسجيل الخروج</a>
+    </div>
+
+    <!-- زر الدعم الشات العائم (Floating Chat Icon) -->
+    <button class="support-chat-btn">
+      <i class="fa-solid fa-comment-dots"></i>
+    </button>
+
+  </div>
+</div>
+
+  <script>
+    // جلب آخر الدروس ديناميكياً من Turso
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch(`${(window.location.protocol.startsWith("http")) ? "" : "http://localhost:5000"}/api/lessons`);
+        if (res.ok) {
+          const lessons = await res.json();
+          if (lessons && lessons.length > 0) {
+            const listContainer = document.querySelector(".lessons-list");
+            if (listContainer) {
+              listContainer.innerHTML = lessons.slice(0, 4).map(l => `
+                <a href="lesson.html?id=${l.id}" class="lesson-card">
+                  <div class="lesson-info">
+                    <i class="fa-solid fa-chevron-left arrow-icon"></i>
+                    <div class="lesson-details">
+                      <h3 class="lesson-title">${l.title}</h3>
+                      <p class="lesson-desc">${l.desc || 'درس وشرح أفكار المنهجية'}</p>
+                      <span class="lesson-tag">${l.unit_name || 'رياضيات'}</span>
+                    </div>
+                  </div>
+                  <div class="lesson-media">
+                    <div class="thumbnail">
+                      <span class="lesson-code">${l.unit_name ? l.unit_name.substring(0, 8) : 'رياضيات'}</span>
+                      <span class="duration">${l.duration || 'فيديو'}</span>
+                    </div>
+                    <div class="play-btn">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                </a>
+              `).join("");
+            }
+          }
+        }
+      } catch (e) {
+        console.log("Using static lessons fallback", e);
+      }
+    });
+  </script>
+</body>
+
+</html>

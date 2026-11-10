@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التسجيل في المنصة - الأستاذ بلعقاب أسامة</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/register.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+  <style>
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ede9fe;
+      color: #6b21a8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .field-hint {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-top: 4px;
+      margin-right: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 🎯 البانر العلوي الترحيبي -->
+    <header class="register-header">
+      <div class="math-watermark">f(x)  ln(x)  e^x  ∫dx  π  a²+ax+b  √x  ∑</div>
+      <div class="bg-shape"></div>
+
+      <div class="header-content">
+        <div class="teacher-info">
+          <div class="app-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <span class="title-sub">التسجيل الرسمي في منصة</span>
+          <h1 class="title-main">الأستاذ بلعقاب أسامة</h1>
+          <div class="badge-year">BAC 2027</div>
+        </div>
+
+        <div class="teacher-image">
+          <img src="images/teacher-image.png" alt="الأستاذ بلعقاب أسامة">
+        </div>
+      </div>
+    </header>
+
+    <!-- 🎯 بطاقة نموذج إنشاء الحساب المتطابق مع البوت -->
+    <main class="register-card">
+      <div style="text-align:center; margin-bottom:14px;">
+        <span class="step-badge"><i class="fa-solid fa-shield-halved"></i> التسجيل الموحد (البوت والموقع)</span>
+        <h2 class="form-title" style="margin-bottom:4px;">إنشاء حساب جديد</h2>
+        <p style="font-size:0.85rem; color:#64748b;">املأ بياناتك بدقة لتحصل على الرمز السري الخاص بك</p>
+      </div>
+
+      <div id="registerAlert" style="display:none; padding:12px 14px; border-radius:14px; font-size:0.88rem; margin-bottom:15px; font-weight:700;"></div>
+
+      <form id="registerForm" class="register-form">
+
+        <!-- 1. الاسم واللقب الحقيقي بالعربية (إجبار العربية كما في البوت) -->
+        <div class="input-group" style="margin-bottom:6px;">
+          <div class="input-icon"><i class="fa-solid fa-user"></i></div>
+          <input type="text" id="regFullName" placeholder="الاسم واللقب الحقيقي بالعربية (مثال: محمد بلقاسم)" required dir="rtl">
+        </div>
+        <p class="field-hint"><i class="fa-solid fa-circle-info" style="color:#7033ff;"></i> الحروف العربية فقط (ممنوع الحروف اللاتينية أو الرموز).</p>
+
+        <!-- 2. رقم الهاتف المحمول (جزائري 05/06/07) -->
+        <div class="input-group" style="margin-top:12px; margin-bottom:6px;">
+          <div class="input-icon"><i class="fa-solid fa-phone"></i></div>
+          <input type="tel" id="regPhone" placeholder="رقم الهاتف (05 / 06 / 07...)" required dir="rtl" maxlength="10">
+        </div>
+        <p class="field-hint"><i class="fa-solid fa-key" style="color:#f59e0b;"></i> ستستخدم هذا الرقم للدخول للموقع مع رمزك السري الدائم.</p>
+
+        <!-- 3. اختيار المدرسة (مع خيار دراسة عن بعد 🌐) -->
+        <div class="input-group" style="margin-top:12px;">
+          <div class="input-icon"><i class="fa-solid fa-school"></i></div>
+          <select id="regSchool" required>
+            <option value="" disabled selected>اختر المدرسة أو نوع الدراسة...</option>
+            <option value="مدرسة القمة رغاية">مدرسة القمة رغاية</option>
+            <option value="مدرسة الأمين رويبة">مدرسة الأمين رويبة</option>
+            <option value="مدرسة القمة باب الزوار">مدرسة القمة باب الزوار</option>
+            <option value="مدرسة ماسي الحلايمية">مدرسة ماسي الحلايمية</option>
+            <option value="دراسة عن بعد 🌐">دراسة عن بعد 🌐 (تلميذ حر / متابعة إلكترونية)</option>
+          </select>
+        </div>
+
+        <!-- 4. الشعبة الدراسية -->
+        <div class="input-group" style="margin-top:12px;">
+          <div class="input-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <select id="regBranch" required>
+            <option value="" disabled selected>اختر الشعبة الدراسية...</option>
+            <option value="علوم تجريبية">علوم تجريبية</option>
+            <option value="رياضيات">رياضيات</option>
+            <option value="تقني رياضي">تقني رياضي</option>
+            
+          </select>
+        </div>
+
+
+
+        <!-- زر التسجيل النهائي -->
+        <button type="submit" id="regSubmitBtn" class="submit-btn" style="margin-top:18px;">
+          <span>تأكيد التسجيل وإنشاء الحساب</span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+      </form>
+
+      <!-- فاصل وروابط -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:18px; padding:16px; margin-top:20px; text-align:center;">
+        <p style="font-size:0.85rem; color:#475569; margin-bottom:8px; font-weight:700;">
+          لديك حساب مسجل بالفعل؟
+        </p>
+        <a href="login.html" class="btn-primary-action" style="display:inline-flex; width:100%; justify-content:center; text-decoration:none; padding:10px; font-size:0.9rem;">
+          <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول بالرقم والرمز السري
+        </a>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- 🎯 نافذة منبثقة لحالة التسجيل (قيد الانتظار للموافقة أو التفعيل الفوري) -->
+    <!-- 🎯 نافذة منبثقة لحالة التسجيل والرمز السري والتنبيه الصارم -->
+    <!-- 🎯 نافذة منبثقة لحالة التسجيل: لقطة شاشة إجبارية ومنع الدخول حتى التفعيل -->
+  <div id="secretCodeModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(8px); z-index:99999; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:#ffffff; border-radius:28px; padding:26px 20px; max-width:440px; width:100%; text-align:center; box-shadow:0 25px 60px rgba(0,0,0,0.35); border:2px solid #ede9fe; max-height:92vh; overflow-y:auto;">
+      
+      <!-- تنبيه إجباري لالتقاط لقطة شاشة (Screenshot) -->
+      <div style="background:#fee2e2; border:2px solid #ef4444; border-radius:20px; padding:14px; margin-bottom:14px; text-align:center;">
+        <div style="font-size:2.2rem; margin-bottom:4px;">📸</div>
+        <h4 style="color:#b91c1c; font-size:1.15rem; font-weight:900; margin-bottom:4px;">
+          هام جداً: التقط لقطة شاشة (Screenshot) الآن!
+        </h4>
+        <p style="color:#7f1d1d; font-size:0.83rem; line-height:1.5; margin:0; font-weight:700;">
+          يرجى التقاط لقطة شاشة لشاشة حاسوبك أو هاتفك الآن لحفظ <strong>رقم الهاتف</strong> و<strong>الرمز السري</strong> حتى لا تضيعهما.
+        </p>
+      </div>
+
+      <!-- بطاقة بيانات الدخول (رقم الهاتف + الرمز السري) -->
+      <div style="background:#f8fafc; border:2px dashed #7033ff; border-radius:18px; padding:14px; margin-bottom:14px; text-align:right;">
+        <div style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.82rem; color:#64748b; font-weight:700;"><i class="fa-solid fa-phone"></i> رقم هاتفك:</span>
+          <div id="modalPhoneVal" style="font-size:1.05rem; font-weight:900; color:#1e293b; direction:ltr;">05xxxxxxxx</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.82rem; color:#64748b; font-weight:700;"><i class="fa-solid fa-key"></i> الرمز السري الدائم:</span>
+          <div id="modalCodeVal" style="font-size:1.35rem; font-weight:900; color:#7033ff; letter-spacing:2px; direction:ltr;">OUS-XXXXX</div>
+        </div>
+        <button type="button" id="copyCredsBtn" style="width:100%; margin-top:10px; background:#ede9fe; color:#6d28d9; border:none; border-radius:10px; padding:8px; font-weight:800; font-size:0.8rem; cursor:pointer;">
+          <i class="fa-solid fa-copy"></i> نسخ رقم الهاتف والرمز السري
+        </button>
+      </div>
+
+      <!-- تحذير صريح بعدم إمكانية تسجيل الدخول حتى التفعيل -->
+      <div style="background:#fffbeb; border:1.5px solid #fde68a; border-radius:16px; padding:12px 14px; margin-bottom:14px; text-align:right;">
+        <p style="font-size:0.84rem; color:#92400e; font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-lock" style="color:#d97706; font-size:1rem;"></i>
+          <span>حسابك معلّق ولا يمكن تسجيل الدخول الآن:</span>
+        </p>
+        <p style="font-size:0.8rem; color:#b45309; line-height:1.5; margin:0;">
+          طلبك في <strong>قائمة الانتظار</strong>. لا يمكنك تسجيل الدخول إلى المنصة أو مشاهدة الدروس حتى يقوم الأستاذ <strong>بلعقاب أسامة</strong> بمراجعة وتفعيل حسابك.
+        </p>
+      </div>
+
+      <!-- تواصل مع الأستاذ للتفعيل -->
+      <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 14px; margin-bottom:14px; text-align:right;">
+        <p style="font-size:0.82rem; color:#5b21b6; line-height:1.5; margin:0;">
+          📩 <strong>خطوة التفعيل:</strong> راسل الأستاذ أسامة مباشرة على حسابه في إنستغرام لتفعيل حسابك والموافقة على طلبك:
+        </p>
+      </div>
+
+      <a href="https://www.instagram.com/prof_oussama_maths" target="_blank" class="btn-secondary-action" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:11px; margin-bottom:10px; font-size:0.88rem; text-decoration:none; font-weight:800;">
+        <i class="fa-brands fa-instagram" style="color:#e1306c; font-size:1.2rem;"></i>
+        <span>مراسلة الأستاذ أسامة على إنستغرام لطلب التفعيل</span>
+      </a>
+
+      <button type="button" id="modalProceedBtn" class="btn-primary-action" style="width:100%; padding:12px; font-size:0.95rem; border:none; cursor:pointer;">
+        <span>الانتقال لصفحة تسجيل الدخول 🔑</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const API_BASE = (window.location.protocol === "http:" || window.location.protocol === "https:") ? "" : "http://localhost:5000";
+      const form = document.getElementById("registerForm");
+      const nameInput = document.getElementById("regFullName");
+      const phoneInput = document.getElementById("regPhone");
+      const schoolSelect = document.getElementById("regSchool");
+      const branchSelect = document.getElementById("regBranch");
+      const submitBtn = document.getElementById("regSubmitBtn");
+      const alertBox = document.getElementById("registerAlert");
+
+      const secretModal = document.getElementById("secretCodeModal");
+      const modalPhoneVal = document.getElementById("modalPhoneVal");
+      const modalCodeVal = document.getElementById("modalCodeVal");
+      const proceedBtn = document.getElementById("modalProceedBtn");
+
+      function showAlert(msg, isError = true) {
+        alertBox.style.display = "block";
+        alertBox.style.background = isError ? "#fef2f2" : "#f0fdf4";
+        alertBox.style.color = isError ? "#dc2626" : "#16a34a";
+        alertBox.style.border = `1px solid ${isError ? '#fecaca' : '#bbf7d0'}`;
+        alertBox.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-xmark' : 'fa-circle-check'}"></i> ${msg}`;
+      }
+
+      // التحقق من الاسم العربي
+      function isArabicName(str) {
+        const arabicRegex = /^[\u0621-\u064A\s]{4,}$/;
+        return arabicRegex.test(str.trim());
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alertBox.style.display = "none";
+
+        const fullName = nameInput.value.trim();
+        const phone = phoneInput.value.trim().replace(/[\s\-]/g, '');
+        const school = schoolSelect.value;
+        const branch = branchSelect.value;
+        const activationCode = "";
+
+        // 1. فحص الاسم بالعربية فقط
+        if (!isArabicName(fullName)) {
+          showAlert("⚠️ يرجى كتابة الاسم واللقب الحقيقي بالحروف العربية فقط (مثال: محمد بلقاسم).");
+          nameInput.focus();
+          return;
+        }
+
+        // 2. فحص رقم الهاتف الجزائري
+        const phoneRegex = /^(0|\+213)[567][0-9]{8}$/;
+        if (!phoneRegex.test(phone)) {
+          showAlert("⚠️ يرجى إدخال رقم هاتف جزائري صالح يبدأ بـ (05 أو 06 أو 07) ويتكون من 10 أرقام.");
+          phoneInput.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إنشاء الحساب والرمز السري...';
+
+        try {
+          const res = await fetch(`${API_BASE}/api/auth/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              full_name: fullName,
+              phone: phone,
+              school: school,
+              branch: branch,
+              activation_code: activationCode
+            })
+          });
+
+          const data = await res.json();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>تأكيد التسجيل وإنشاء الحساب</span> <i class="fa-solid fa-arrow-left"></i>';
+
+          if (data.success && data.user) {
+            modalPhoneVal.textContent = data.user.phone || phone;
+            modalCodeVal.textContent = data.user.activation_code || data.user.code || "OUS-MATH";
+            secretModal.style.display = "flex";
+
+            proceedBtn.onclick = () => { window.location.href = "login.html"; };
+
+            // زر التفعيل الفوري بالكود من داخل النافذة
+            const instantBtn = document.getElementById("instantActivateBtn");
+            const instantInput = document.getElementById("instantCodeInput");
+            const instantAlert = document.getElementById("instantActAlert");
+
+            if (instantBtn) {
+              instantBtn.onclick = async () => {
+                const actCode = instantInput.value.trim().toUpperCase();
+                if (!actCode) {
+                  instantAlert.style.display = "block";
+                  instantAlert.style.color = "#dc2626";
+                  instantAlert.textContent = "يرجى كتابة كود التفعيل أولاً.";
+                  return;
+                }
+                instantBtn.disabled = true;
+                instantBtn.textContent = "جاري التحقق...";
+                try {
+                  const actRes = await fetch(`${API_BASE}/api/auth/activate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phone: data.user.phone || phone, activation_code: actCode })
+                  });
+                  const actData = await actRes.json();
+                  instantBtn.disabled = false;
+                  instantBtn.textContent = "تفعيل فوري";
+
+                  if (actData.success && actData.user) {
+                    window.AppAPI.setCurrentStudent(actData.user);
+                    instantAlert.style.display = "block";
+                    instantAlert.style.color = "#16a34a";
+                    instantAlert.textContent = "✅ تم تفعيل حسابك بنجاح! جاري الدخول للمنصة...";
+                    setTimeout(() => { window.location.href = "index.html"; }, 1000);
+                  } else {
+                    instantAlert.style.display = "block";
+                    instantAlert.style.color = "#dc2626";
+                    instantAlert.textContent = actData.error || "كود التفعيل غير صحيح.";
+                  }
+                } catch(e) {
+                  instantBtn.disabled = false;
+                  instantBtn.textContent = "تفعيل فوري";
+                  instantAlert.style.display = "block";
+                  instantAlert.style.color = "#dc2626";
+                  instantAlert.textContent = "تعذر الاتصال بالخادم.";
+                }
+              };
+            }
+          } else {
+            showAlert(data.error || "حدث خطأ أثناء التسجيل، يرجى المحاولة لاحقاً.");
+          }
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>تأكيد التسجيل وإنشاء الحساب</span> <i class="fa-solid fa-arrow-left"></i>';
+          showAlert("تعذر الاتصال بالخادم، تأكد من تشغيل web_server.py.");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

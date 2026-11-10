@@ -1,0 +1,26 @@
+/* تنسيق الـ Container الخارجي لمنع أي خروج للفيديو */
+.video-wrapper {
+  position: relative;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden; /* أهم سطر: يخفي أي جزء يخرج عن الإطار */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* التنسيق الداخلي لضمان نسبة 16:9 وتطبيق خدعة القص */
+.responsive-video {
+  position: relative;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+
+/* أهم جزء: قص الشريط السفلي ليوتيوب */
+.responsive-video iframe {
+  position: absolute;
+  top: -2%;      /* إزاحة طفيفة للأعلى لتغطية شريط يوتيوب العلوي */
+  left: -2%;     /* إزاحة طفيفة لليسار لتغطية الشعار الجانبي */
+  width: 104%;   /* تكبير العرض قليلاً */
+  height: 108%;  /* تكبير الطول قليلاً بحيث يتم قص الشريط السفلي الأسود */
+  border: 0;
+}
