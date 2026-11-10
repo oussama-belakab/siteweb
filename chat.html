@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التواصل مع الأستاذ - بلعقاب أسامة</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- 🎯 شريط العنوان العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>💬 المحادثة مع الأستاذ</h1>
+          <p>طرح الأسئلة المنهجية والاستفسارات الرياضية مباشرة</p>
+        </div>
+      </div>
+      <span class="subpage-badge" style="background:#22c55e; color:#fff;">
+        <i class="fa-solid fa-circle" style="font-size:8px;"></i> متصل
+      </span>
+    </header>
+
+    <!-- 🎯 صندوق المحادثة -->
+    <div class="chat-window">
+      
+      <!-- شريط معلومات المحادثة -->
+      <div style="padding:12px 18px; background:#f8fafc; border-bottom:1px solid #edf0f5; display:flex; align-items:center; gap:12px;">
+        <div style="width:42px; height:42px; border-radius:50%; background:#7033ff; color:#fff; display:flex; align-items:center; justify-content:center; font-size:18px;">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <div>
+          <h4 style="font-size:0.95rem; font-weight:800; color:#1e293b; margin:0;">الأستاذ بلعقاب أسامة</h4>
+          <span style="font-size:0.75rem; color:#64748b;">أستاذ مادة الرياضيات للطور الثانوي</span>
+        </div>
+      </div>
+
+      <!-- قائمة الرسائل -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble teacher">
+          مرحباً بك بني! أرسل لي أي استفسار أو سؤال حول الدروس والواجبات وسأقوم بالرد عليك وتوضيح الغموض إن شاء الله. بالتوفيق والنجاح! 🌟
+          <div class="bubble-meta">
+            <span>الأستاذ • 09:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- شريط كتابة الرسالة -->
+      <form class="chat-input-bar" id="chatForm">
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك للأستاذ هنا..." required autocomplete="off">
+        <button type="submit" class="chat-send-btn" title="إرسال">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+
+    </div>
+
+  </div>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="homework.html" class="nav-item">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const chatMessages = document.getElementById("chatMessages");
+      const chatForm = document.getElementById("chatForm");
+      const chatInput = document.getElementById("chatInput");
+
+      const getStudentSession = () => {
+        return (window.AppAPI && window.AppAPI.getCurrentStudent())
+          || JSON.parse(localStorage.getItem("math_student") || localStorage.getItem("math_current_student") || "null");
+      };
+
+      let student = getStudentSession();
+      if (!student || (!student.phone && !student.id)) {
+        chatMessages.innerHTML = `
+          <div style="text-align:center; padding:40px 20px;">
+            <i class="fa-solid fa-lock" style="font-size:2.5rem; color:#d97706; margin-bottom:12px;"></i>
+            <h3 style="color:#1e293b; font-weight:800;">يرجى تسجيل الدخول أولاً</h3>
+            <p style="color:#64748b; font-size:0.9rem;">لإرسال رسائل للأستاذ يجب أن تكون مسجلاً في المنصة.</p>
+            <a href="login.html" style="display:inline-block; margin-top:12px; background:#7033ff; color:#fff; padding:10px 24px; border-radius:12px; text-decoration:none; font-weight:800;">تسجيل الدخول</a>
+          </div>
+        `;
+        chatForm.style.display = "none";
+        return;
+      }
+
+      const API_BASE = window.location.hostname === "localhost" ? "http://localhost:5000" : "";
+
+      async function loadMessages() {
+        try {
+          const res = await fetch(`${API_BASE}/api/chat/messages?phone=${encodeURIComponent(student.phone)}`);
+          if (!res.ok) return;
+          const messages = await res.json();
+          
+          // Keep welcome message + add server messages
+          let html = `
+            <div class="chat-bubble teacher">
+              مرحباً بك بني! أرسل لي أي استفسار أو سؤال حول الدروس والواجبات وسأقوم بالرد عليك وتوضيح الغموض إن شاء الله. بالتوفيق والنجاح! 🌟
+              <div class="bubble-meta">
+                <span>الأستاذ • مرحباً</span>
+              </div>
+            </div>
+          `;
+          
+          messages.forEach(msg => {
+            const senderLabel = msg.sender === "teacher" ? "الأستاذ" : "أنت";
+            const timeStr = msg.time ? msg.time.split(" ").pop() : "";
+            html += `
+              <div class="chat-bubble ${msg.sender}">
+                ${msg.text}
+                <div class="bubble-meta">
+                  <span>${senderLabel} • ${timeStr}</span>
+                </div>
+              </div>
+            `;
+          });
+          
+          chatMessages.innerHTML = html;
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        } catch(e) {
+          console.error("Load messages error:", e);
+        }
+      }
+
+      // Load on start
+      loadMessages();
+      
+      // Auto-refresh every 10 seconds
+      setInterval(loadMessages, 3500);
+
+      chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // Immediately show the message in UI
+        const time = new Date().toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble student";
+        bubble.innerHTML = `
+          ${text}
+          <div class="bubble-meta">
+            <span>أنت • ${time}</span>
+          </div>
+        `;
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatInput.value = "";
+
+        // Send to server
+        try {
+          const res = await fetch(`${API_BASE}/api/chat/send`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone: student.phone, message: text })
+          });
+          const data = await res.json();
+          if (!data.success) {
+            bubble.style.opacity = "0.5";
+            bubble.innerHTML += `<div style="color:#ef4444; font-size:0.75rem; margin-top:4px;">⚠️ فشل الإرسال</div>`;
+          } else {
+            // تحديث الرسائل فوراً من الخادم لتأكيد الاستلام
+            setTimeout(loadMessages, 500);
+          }
+        } catch(err) {
+          bubble.style.opacity = "0.5";
+          bubble.innerHTML += `<div style="color:#ef4444; font-size:0.75rem; margin-top:4px;">⚠️ خطأ في الاتصال</div>`;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

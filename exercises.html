@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التمارين والحلول النموذجية - الأستاذ بلعقاب أسامة</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- 🎯 شريط العنوان العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>📝 بنك التمارين والحلول</h1>
+          <p>سلاسل تدريبية، مسائل شاملة، وحلول نموذجية مفصلة</p>
+        </div>
+      </div>
+      <span class="subpage-badge">سلاسل تدريبية</span>
+    </header>
+
+    <!-- 🎯 شريط البحث والتصفية -->
+    <div class="search-filter-bar">
+      <!-- شريط تنبيه للزوار غير المسجلين -->
+      <div id="guestWarningBanner" style="display:none; width:100%; margin-bottom: 12px; background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; padding: 10px 16px; border-radius: 14px; font-weight: 700; font-size: 0.88rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-lock" style="color:#d97706; font-size:1.1rem;"></i>
+          <span>أنت تتصفح كزائر. لتحميل تمارين وحلول الأستاذ بلعقاب أسامة يرجى تسجيل الدخول بالرقم والرمز السري.</span>
+        </div>
+        <a href="login.html" style="background:#d97706; color:#fff; text-decoration:none; padding:5px 12px; border-radius:10px; font-size:0.82rem; font-weight:800;">تسجيل الدخول</a>
+      </div>
+
+      <div class="search-input-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="exerciseSearchInput" placeholder="ابحث عن تمرين، فكرة، أو مسألة...">
+      </div>
+
+      <!-- أشرطة الوحدات -->
+      <div class="units-scroll" id="unitsTabs">
+        <button class="unit-pill active" data-unit="all">
+          <i class="fa-solid fa-layer-group"></i> كل التمارين
+        </button>
+      </div>
+    </div>
+
+    <!-- 🎯 شبكة التمارين -->
+    <div class="items-grid" id="exercisesGrid">
+      <div class="empty-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>جاري تحميل التمارين والحلول...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="exercises.html" class="nav-item active">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="homework.html" class="nav-item">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const unitsTabsContainer = document.getElementById("unitsTabs");
+      const exercisesGrid = document.getElementById("exercisesGrid");
+      const searchInput = document.getElementById("exerciseSearchInput");
+      const guestBanner = document.getElementById("guestWarningBanner");
+
+      if (guestBanner && !window.AppAPI.isLoggedIn()) {
+        guestBanner.style.display = "flex";
+      }
+
+      let allExercises = [];
+      let currentUnit = "all";
+
+      // 1. تحميل الوحدات
+      const units = await window.AppAPI.getUnits();
+      units.forEach(u => {
+        const btn = document.createElement("button");
+        btn.className = "unit-pill";
+        btn.dataset.unit = u.id;
+        btn.innerHTML = `${u.name}`;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".unit-pill").forEach(p => p.classList.remove("active"));
+          btn.classList.add("active");
+          currentUnit = u.id;
+          renderExercises();
+        });
+        unitsTabsContainer.appendChild(btn);
+      });
+
+      // زر "الكل"
+      document.querySelector('[data-unit="all"]').addEventListener("click", (e) => {
+        document.querySelectorAll(".unit-pill").forEach(p => p.classList.remove("active"));
+        e.currentTarget.classList.add("active");
+        currentUnit = "all";
+        renderExercises();
+      });
+
+      // 2. تحميل التمارين
+      allExercises = await window.AppAPI.getExercises();
+      renderExercises();
+
+      // البحث المباشر
+      searchInput.addEventListener("input", () => {
+        renderExercises();
+      });
+
+      // استخراج رقم التمرين من العنوان للترتيب التلقائي
+      function extractNumber(title) {
+        const m = title.match(/(\d+)/);
+        return m ? parseInt(m[1], 10) : 9999;
+      }
+
+      function renderExercises() {
+        const q = searchInput.value.trim().toLowerCase();
+        let filtered = [...allExercises];
+
+        if (currentUnit !== "all") {
+          filtered = filtered.filter(ex => ex.unit_id == currentUnit);
+        }
+
+        if (q) {
+          filtered = filtered.filter(ex => 
+            ex.title.toLowerCase().includes(q) || 
+            (ex.unit_name && ex.unit_name.toLowerCase().includes(q))
+          );
+        }
+
+        // ترتيب التمارين حسب الرقم المستخرج من العنوان تلقائياً
+        filtered.sort((a, b) => extractNumber(a.title) - extractNumber(b.title));
+
+        if (filtered.length === 0) {
+          exercisesGrid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <i class="fa-solid fa-file-excel"></i>
+              <h3>لا توجد تمارين حالياً في هذه الوحدة</h3>
+              <p>سيتم رفع تمارين جديدة قريباً من قبل الأستاذ.</p>
+            </div>
+          `;
+          return;
+        }
+
+        exercisesGrid.innerHTML = filtered.map(ex => `
+          <div class="feature-card">
+            <div>
+              <div class="card-top">
+                <span class="card-unit-badge"><i class="fa-solid fa-tags"></i> ${ex.unit_name || 'تمرين'}</span>
+                <span class="card-status-badge active"><i class="fa-solid fa-fire"></i> ${ex.difficulty || 'مستوى ممتاز'}</span>
+              </div>
+              <h3 class="card-title">${ex.title}</h3>
+              <p class="card-desc">سلسلة تدريبية تشمل أفكاراً منهجية هامة للتحضير للبكالوريا.</p>
+            </div>
+            <div class="card-actions">
+              <button onclick="window.AppAPI.openProtectedFile('${ex.pdf_url || '#'}', '${ex.title}')" class="btn-primary-action" style="cursor:pointer; border:none;">
+                <i class="fa-solid fa-file-pdf"></i> عرض التمرين
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+    });
+
+  </script>
+
+</body>
+</html>

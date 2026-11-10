@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>علاماتي وتصحيح الواجبات - الأستاذ بلعقاب أسامة</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- 🎯 شريط العنوان العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>📊 علاماتي وتصحيح الواجبات</h1>
+          <p>سجل الواجبات المسلمة، التقييم، وتوجيهات الأستاذ التفصيلية</p>
+        </div>
+      </div>
+      <a href="homework.html" class="subpage-badge" style="text-decoration:none;">
+        <i class="fa-solid fa-plus"></i> واجب جديد
+      </a>
+    </header>
+
+    <!-- 🎯 بطاقة إحصائيات سريعة للتلميذ -->
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:24px;">
+      <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #edf0f5; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <span style="font-size:0.8rem; color:#64748b; font-weight:700; display:block; margin-bottom:4px;">إجمالي المسلم</span>
+        <strong id="totalSubmissionsCount" style="font-size:1.4rem; color:#240c66;">-</strong>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #edf0f5; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <span style="font-size:0.8rem; color:#64748b; font-weight:700; display:block; margin-bottom:4px;">تم التصحيح</span>
+        <strong id="correctedCount" style="font-size:1.4rem; color:#0d8a43;">-</strong>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #edf0f5; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <span style="font-size:0.8rem; color:#64748b; font-weight:700; display:block; margin-bottom:4px;">قيد المراجعة</span>
+        <strong id="pendingCount" style="font-size:1.4rem; color:#b78103;">-</strong>
+      </div>
+    </div>
+
+    <!-- 🎯 قائمة الواجبات المصححة والمسلمة -->
+    <div id="gradesContainer">
+      <div class="empty-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>جاري استرجاع سجل النتائج...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="homework.html" class="nav-item">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+    <a href="grades.html" class="nav-item">
+      <i class="fa-solid fa-chart-line"></i>
+      <span>نتائجي</span>
+    </a>
+    <a href="profile.html" class="nav-item active">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("gradesContainer");
+      const totalCount = document.getElementById("totalSubmissionsCount");
+      const correctedCount = document.getElementById("correctedCount");
+      const pendingCount = document.getElementById("pendingCount");
+
+      const student = window.AppAPI.getCurrentStudent();
+      if (!student) {
+        container.innerHTML = `
+          <div class="upload-card" style="text-align:center; padding:35px 20px;">
+            <div style="width:70px; height:70px; background:#f1ebff; color:#7033ff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 16px auto;">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 style="font-size:1.2rem; color:#240c66; font-weight:800; margin-bottom:8px;">يرجى تسجيل الدخول أولاً</h3>
+            <p style="font-size:0.9rem; color:#64748b; line-height:1.6; max-width:460px; margin:0 auto 20px auto;">
+              لعرض علاماتك وتصحيحات الواجبات وتوجيهات الأستاذ الخاصة بك، سجل دخولك برقم هاتفك والرمز السري.
+            </p>
+            <div style="display:flex; justify-content:center; gap:12px;">
+              <a href="login.html" class="btn-primary-action" style="width:auto; padding:12px 24px;">
+                <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول بالرقم والرمز السري
+              </a>
+              <a href="https://t.me/Belakab_math_bot" target="_blank" class="btn-secondary-action" style="width:auto; padding:12px 24px;">
+                <i class="fa-brands fa-telegram"></i> التسجيل عبر بوت التليجرام
+              </a>
+            </div>
+          </div>
+        `;
+        totalCount.textContent = "0";
+        correctedCount.textContent = "0";
+        pendingCount.textContent = "0";
+        return;
+      }
+
+      const submissions = await window.AppAPI.getMySubmissions();
+
+      // الإحصائيات
+      totalCount.textContent = submissions.length;
+      const corrected = submissions.filter(s => s.status === "تم التصحيح" || (s.grade_text && s.grade_text.includes("/")));
+      const pending = submissions.length - corrected.length;
+
+      correctedCount.textContent = corrected.length;
+      pendingCount.textContent = pending;
+
+      if (submissions.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-clipboard-question"></i>
+            <h3>لم تقم بإرسال أي واجبات بعد</h3>
+            <p>عندما تقوم بإرسال حلول الواجبات، ستظهر علاماتك وملاحظات الأستاذ هنا مباشرة.</p>
+            <a href="homework.html" class="btn-primary-action" style="display:inline-flex; width:auto; margin-top:16px;">
+              <i class="fa-solid fa-upload"></i> إرسال أول واجب الآن
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = submissions.map(sub => {
+        const isCorrected = sub.status === "تم التصحيح" || (sub.grade_text && sub.grade_text.includes("/"));
+        return `
+          <div class="grade-item">
+            <div class="grade-header">
+              <div>
+                <span class="card-status-badge ${isCorrected ? 'active' : 'pending'}" style="margin-bottom:6px; display:inline-block;">
+                  <i class="fa-solid ${isCorrected ? 'fa-circle-check' : 'fa-hourglass-half'}"></i>
+                  ${sub.status || 'قيد الانتظار'}
+                </span>
+                <h3 style="font-size:1.05rem; color:#1e293b; font-weight:800; margin:0;">
+                  ${sub.exercise_name || 'واجب منزلي'}
+                </h3>
+                <span style="font-size:0.78rem; color:#8b92a5; margin-top:3px; display:block;">
+                  تاريخ التسليم: ${sub.date || 'مؤخراً'}
+                </span>
+              </div>
+              <div>
+                <div class="grade-score ${isCorrected ? '' : 'pending'}">
+                  ${sub.grade_text || (isCorrected ? 'تم التقييم' : 'قيد التصحيح ⏳')}
+                </div>
+              </div>
+            </div>
+
+            ${sub.notes_history ? `
+              <div class="teacher-notes-box">
+                <strong><i class="fa-solid fa-chalkboard-user"></i> ملاحظة وتوجيهات الأستاذ:</strong>
+                ${sub.notes_history}
+              </div>
+            ` : `
+              <div style="font-size:0.84rem; color:#94a3b8; margin-top:8px;">
+                <i class="fa-solid fa-info-circle"></i> لم تُضف ملاحظات بعد، سيقوم الأستاذ بكتابة التوجيهات عند انتهاء التصحيح.
+              </div>
+            `}
+          </div>
+        `;
+      }).join("");
+    });
+  </script>
+
+</body>
+</html>

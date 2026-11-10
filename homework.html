@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إرسال الواجبات المنزلية - الأستاذ بلعقاب أسامة</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features.css">
+  <script src="js/app-api.js" defer></script>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- 🎯 شريط العنوان العلوي -->
+    <header class="subpage-header">
+      <div class="subpage-header-right">
+        <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="subpage-title-box">
+          <h1>📤 إرسال محاولات الواجبات</h1>
+          <p>أرسل حلك ليقوم الأستاذ بتصحيحه وتقديم الملاحظات والعلامة</p>
+        </div>
+      </div>
+      <a href="grades.html" class="subpage-badge" style="text-decoration:none;">
+        <i class="fa-solid fa-chart-line"></i> علاماتي
+      </a>
+    </header>
+
+    <!-- 🎯 قسم الواجبات المفتوحة حالياً -->
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-size: 1.15rem; color: #1e293b; margin-bottom: 12px; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-bullhorn" style="color:#7033ff;"></i> الواجبات المفتوحة للتسليم
+      </h2>
+      <div class="items-grid" id="activeHomeworkList">
+        <div class="empty-state">
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          <p>جاري فحص الواجبات النشطة...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🎯 بطاقة نموذج رفع الحل -->
+    <div class="upload-card">
+      <h2 style="font-size: 1.2rem; color: #240c66; margin-bottom: 8px;">
+        <i class="fa-solid fa-cloud-arrow-up" style="color:#7033ff;"></i> نموذج رفع محاولة الحل
+      </h2>
+      <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 20px;">
+        قم باختيار الواجب وتصوير أوراقك بوضوح ثم اضغط على زر الإرسال.
+      </p>
+
+      <form id="homeworkForm">
+        
+        <!-- اختيار الواجب -->
+        <div style="margin-bottom: 16px;">
+          <label style="display:block; font-weight:700; font-size:0.9rem; margin-bottom:6px; color:#334155;">اختر الواجب:</label>
+          <select id="homeworkSelect" required style="width:100%; padding:12px 16px; border:1.5px solid #e2e8f0; border-radius:12px; font-family:'Cairo'; font-size:0.92rem; outline:none; background:#fff;">
+            <option value="" disabled selected>-- حدد الواجب المراد إرسال حله --</option>
+          </select>
+        </div>
+
+        <!-- اسم التلميذ والمدرسة -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div>
+            <label style="display:block; font-weight:700; font-size:0.9rem; margin-bottom:6px; color:#334155;">اسم ولقب التلميذ:</label>
+            <input type="text" id="studentNameInput" required readonly placeholder="الاسم واللقب بالعربية" style="width:100%; padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:12px; font-family:'Cairo'; font-size:0.92rem; outline:none; background:#f1f5f9; color:#334155; cursor:not-allowed;">
+          </div>
+          <div>
+            <label style="display:block; font-weight:700; font-size:0.9rem; margin-bottom:6px; color:#334155;">المدرسة / الفوج:</label>
+            <input type="text" id="studentSchoolInput" readonly placeholder="اسم المدرسة أو تلميذ حر" style="width:100%; padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:12px; font-family:'Cairo'; font-size:0.92rem; outline:none; background:#f1f5f9; color:#334155; cursor:not-allowed;">
+          </div>
+        </div>
+
+        <!-- منطقة إفلات ورفع الصور / الملفات -->
+        <div class="drop-zone" id="dropZone">
+          <i class="fa-regular fa-images"></i>
+          <h4>اسحب صور الحل إلى هنا أو اضغط للاختيار</h4>
+          <p>يمكنك رفع عدة صور لصفحات الحل أو ملف PDF واحد (JPG, PNG, PDF)</p>
+          <input type="file" id="fileInput" multiple accept="image/*,application/pdf" style="display: none;">
+        </div>
+
+        <!-- حاوية معاينة الصور المرفوعة -->
+        <div class="preview-container" id="previewContainer"></div>
+
+        <!-- ملاحظات للتلميذ -->
+        <div style="margin: 16px 0;">
+          <label style="display:block; font-weight:700; font-size:0.9rem; margin-bottom:6px; color:#334155;">ملاحظة أو سؤال للأستاذ (اختياري):</label>
+          <textarea id="studentNote" rows="3" placeholder="إذا كان لديك سؤال حول خطوة معينة في الحل، اكتبه هنا..." style="width:100%; padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:12px; font-family:'Cairo'; font-size:0.9rem; outline:none; resize:vertical;"></textarea>
+        </div>
+
+        <!-- زر الإرسال النهائي -->
+        <button type="submit" id="submitBtn" class="btn-primary-action" style="width:100%; padding:14px; font-size:1.05rem; border-radius:14px;">
+          <i class="fa-solid fa-paper-plane"></i> إرسال الواجب للتصحيح
+        </button>
+
+      </form>
+    </div>
+
+    <!-- نافذة نجاح الإرسال (Modal) -->
+    <div id="successModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
+      <div style="background:#fff; border-radius:24px; padding:30px 24px; max-width:420px; width:100%; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+        <div style="width:70px; height:70px; background:#e6f9ed; color:#0d8a43; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 16px auto;">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 style="font-size:1.3rem; color:#1e293b; margin-bottom:8px; font-weight:800;">تم إرسال محاولتك بنجاح!</h3>
+        <p style="font-size:0.9rem; color:#64748b; line-height:1.5; margin-bottom:24px;">
+          وصلت أوراق حلك للأستاذ بلعقاب أسامة. يمكنك متابعة حالة التصحيح والحصول على العلامة والملاحظات في صفحة "علاماتي".
+        </p>
+        <div style="display:flex; gap:10px;">
+          <a href="grades.html" class="btn-primary-action" style="flex:1;">
+            <i class="fa-solid fa-chart-line"></i> الانتقال لعلاماتي
+          </a>
+          <button onclick="document.getElementById('successModal').style.display='none'" class="btn-secondary-action">
+            إغلاق
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🎯 شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="lessons.html" class="nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>الدروس</span>
+    </a>
+    <a href="exercises.html" class="nav-item">
+      <i class="fa-solid fa-pen-to-square"></i>
+      <span>التمارين</span>
+    </a>
+    <a href="homework.html" class="nav-item active">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      <span>الواجبات</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const activeList = document.getElementById("activeHomeworkList");
+      const hwSelect = document.getElementById("homeworkSelect");
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const previewContainer = document.getElementById("previewContainer");
+      const form = document.getElementById("homeworkForm");
+      const studentNameInput = document.getElementById("studentNameInput");
+      const studentSchoolInput = document.getElementById("studentSchoolInput");
+
+      // استرجاع بيانات التلميذ المسجل تلقائياً
+      function fillStudentFields() {
+        const currentStudent = (window.AppAPI && window.AppAPI.getCurrentStudent())
+          || JSON.parse(localStorage.getItem("math_student") || localStorage.getItem("math_current_student") || "null");
+        if (currentStudent) {
+          const name = currentStudent.full_name || `${currentStudent.first_name || ''} ${currentStudent.last_name || ''}`.trim() || currentStudent.name || "";
+          const school = currentStudent.school || currentStudent.branch || "";
+          if (name && studentNameInput && !studentNameInput.value) {
+            studentNameInput.value = name;
+          }
+          if (school && studentSchoolInput && !studentSchoolInput.value) {
+            studentSchoolInput.value = school;
+          }
+        }
+      }
+      fillStudentFields();
+      setTimeout(fillStudentFields, 300);
+      setTimeout(fillStudentFields, 1000);
+
+      let uploadedFiles = [];
+
+      // 1. تحميل الواجبات النشطة
+      const homeworks = await window.AppAPI.getHomework();
+      if (homeworks.length === 0) {
+        activeList.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <i class="fa-regular fa-circle-check" style="color:#0d8a43;"></i>
+            <h3>لا توجد واجبات مفتوحة للتسليم حالياً</h3>
+            <p>ممتاز! لقد قمت بإنهاء واجباتك أو لم يقم الأستاذ بإضافة واجب جديد بعد.</p>
+          </div>
+        `;
+      } else {
+        activeList.innerHTML = homeworks.map(hw => `
+          <div class="feature-card">
+            <div>
+              <div class="card-top">
+                <span class="card-unit-badge"><i class="fa-solid fa-book"></i> ${hw.unit_name || 'واجب'}</span>
+                <span class="card-status-badge pending"><i class="fa-regular fa-clock"></i> آخر أجل: ${hw.deadline || 'قريباً'}</span>
+              </div>
+              <h3 class="card-title">${hw.title}</h3>
+              <p class="card-desc">${hw.notes || 'يُرجى إرسال الحل قبل الموعد النهائي المحدد.'}</p>
+            </div>
+            <div class="card-actions">
+              <a href="${hw.pdf_url || '#'}" class="btn-primary-action">
+                <i class="fa-solid fa-download"></i> تحميل نص الواجب PDF
+              </a>
+              <button onclick="selectHomework('${hw.title}')" class="btn-secondary-action">
+                <i class="fa-solid fa-upload"></i> تسليم الحل
+              </button>
+            </div>
+          </div>
+        `).join("");
+
+        // تعبئة القائمة المنسدلة
+        homeworks.forEach(hw => {
+          const opt = document.createElement("option");
+          opt.value = hw.title;
+          opt.textContent = `${hw.title} (${hw.unit_name})`;
+          hwSelect.appendChild(opt);
+        });
+      }
+
+      window.selectHomework = (title) => {
+        hwSelect.value = title;
+        dropZone.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      // 2. معالجة رفع الملفات والسحب والإفلات
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        if (e.dataTransfer.files.length) {
+          handleFiles(e.dataTransfer.files);
+        }
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length) {
+          handleFiles(fileInput.files);
+        }
+      });
+
+      function handleFiles(files) {
+        Array.from(files).forEach(file => {
+          uploadedFiles.push(file);
+          renderPreview(file);
+        });
+      }
+
+      function renderPreview(file) {
+        const div = document.createElement("div");
+        div.className = "preview-item";
+
+        if (file.type.startsWith("image/")) {
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(file);
+          div.appendChild(img);
+        } else {
+          div.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; height:100%; background:#e2e8f0; font-size:20px; color:#240c66;"><i class="fa-solid fa-file-pdf"></i></div>`;
+        }
+
+        const btnRemove = document.createElement("button");
+        btnRemove.className = "preview-remove";
+        btnRemove.innerHTML = "×";
+        btnRemove.onclick = (e) => {
+          e.stopPropagation();
+          uploadedFiles = uploadedFiles.filter(f => f !== file);
+          div.remove();
+        };
+
+        div.appendChild(btnRemove);
+        previewContainer.appendChild(div);
+      }
+
+      // 3. إرسال النموذج
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!window.AppAPI.isLoggedIn()) {
+          window.AppAPI.showAuthModal("عذراً! إرسال ومتابعة حلول الواجبات المنزلية متاح فقط للتلاميذ المسجلين بالرقم والرمز السري.");
+          return;
+        }
+
+        if (uploadedFiles.length === 0) {
+          alert("يرجى إرفاق صورة واحدة على الأقل أو ملف PDF لورقة حلك.");
+          return;
+        }
+
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال محاولتك...';
+
+        const formData = new FormData();
+        formData.append("exercise_name", hwSelect.value);
+        formData.append("student_name", studentNameInput.value);
+        formData.append("school", studentSchoolInput.value);
+        formData.append("note", document.getElementById("studentNote").value);
+        uploadedFiles.forEach((file, index) => {
+          formData.append(`file_${index}`, file);
+        });
+
+        const res = await window.AppAPI.submitHomework(formData);
+
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال الواجب للتصحيح';
+
+        if (res && res.success) {
+          document.getElementById("successModal").style.display = "flex";
+          form.reset();
+          uploadedFiles = [];
+          previewContainer.innerHTML = "";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
